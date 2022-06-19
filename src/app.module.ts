@@ -1,6 +1,7 @@
 import {Module} from "@nestjs/common";
 import { DocumentModule } from './document/document.module';
 //import {MongooseModule} from "@nestjs/mongoose";
+import { S3Module } from './s3/s3.module';
 
 
 @Module({
@@ -8,6 +9,7 @@ import { DocumentModule } from './document/document.module';
 
   imports: [
       //MongooseModule.forRoot('mongodb://localhost:27017/mrb-info?readPreference=primary&directConnection=true&ssl=false'),
-      DocumentModule]
+      DocumentModule,
+      S3Module]
 })
 export class AppModule{}
