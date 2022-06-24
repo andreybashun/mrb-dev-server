@@ -2,14 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 import *as uuid from 'uuid'
 
-
 @Injectable()
 export class S3Service {
 
     async upload(file) : Promise<string> {
-        //const { originalname } = file;
         const  fileName = uuid.v4();
-        console.log("test",fileName)
         const bucketS3 = 'mrb-doc';
         await this.uploadS3(file.buffer, bucketS3, fileName);
         return fileName
@@ -34,14 +31,29 @@ export class S3Service {
         });
     }
 
+    async getFile(key){
+        const s3 = this.getS3()
+        await s3.getObject(
+            { Bucket: process.env.BUCKET_S3, Key: key},
+            function (error, data) {
+                if (error != null) {
+                    alert("Failed to retrieve an object: " + error);
+                } else {
+                    console.log(data)
+                    return data
+                }
+            }
+        );
+    }
+
     getS3() {
         return new S3({
-            accessKeyId: 'YCAJEgPeLLENuh0iiocABjh5q',
-            secretAccessKey: 'YCO3UkhdeDbzqbvDz6BptW6UgzjqmJSb_Q3U1Xrr',
-            endpoint: 'storage.yandexcloud.net',
+            accessKeyId: process.env.S3_ACCESS_KEY_ID,
+            secretAccessKey: process.env.SECRET_ACCESS_KEY,
+            endpoint: process.env.END_POINT,
             s3ForcePathStyle: true,
-            signatureVersion: 'v4',
-            region: 'ru-central1'
+            signatureVersion: process.env.SIGNATURE_VERSION,
+            region: process.env.REGION
         });
     }
 }
