@@ -1,28 +1,29 @@
 import {Body, Controller, Get, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {DocumentService} from "./document.service";
-import { FileInterceptor} from "@nestjs/platform-express";
+import {FileInterceptor} from "@nestjs/platform-express";
 import {CreateDocDto} from "./dto/create-doc.dto";
 
-@Controller('document')
+@Controller ('document')
 export class DocumentController {
-    constructor (private  documentService: DocumentService) {
+    constructor (private documentService: DocumentService) {
     }
 
-    @Post()
-    @UseInterceptors(FileInterceptor('file'))
-    create(@UploadedFile() file, @Body() dto: CreateDocDto){
-        return this.documentService.create(dto, file);
+    @Post ()
+    @UseInterceptors (FileInterceptor ('file'))
+    create (@UploadedFile () file, @Body () dto: CreateDocDto) {
+        return this.documentService.create (dto, file);
     }
 
-    getOne(){
+    getOne () {
 
     }
-    @Get()
-    getAll(){
-        return this.documentService.getAll();
+
+    @Get ()
+    getAll () {
+        return this.documentService.getAll ();
     }
 
-    delete(){
+    delete () {
 
     }
 }

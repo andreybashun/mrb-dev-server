@@ -1,53 +1,52 @@
-import { Injectable } from '@nestjs/common';
-import { S3 } from 'aws-sdk';
+import {Injectable} from '@nestjs/common';
+import {S3} from 'aws-sdk';
 import *as uuid from 'uuid'
 
-@Injectable()
+@Injectable ()
 export class S3Service {
 
-    async upload(file) : Promise<string> {
-        const  fileName = uuid.v4();
+    async upload (file): Promise<string> {
+        const fileName = uuid.v4 ();
         const bucketS3 = 'mrb-doc';
-        await this.uploadS3(file.buffer, bucketS3, fileName);
+        await this.uploadS3 (file.buffer, bucketS3, fileName);
         return fileName
     }
 
-    async uploadS3(file, bucket, name) {
-        const s3 = this.getS3();
+    async uploadS3 (file, bucket, name) {
+        const s3 = this.getS3 ();
         const params = {
             Bucket: bucket,
-            Key: String(name),
+            Key: String (name),
             Body: file,
         };
-        return new Promise((resolve, reject) => {
-            let s3Response = s3.upload(params, (err, data) => {
+        return new Promise ((resolve, reject) => {
+            let s3Response = s3.upload (params, (err, data) => {
                 if (err) {
-                    console.log(err);
-                    reject(err.message);
+                    console.log (err);
+                    reject (err.message);
                 }
-                resolve(data);
-                console.log(s3Response);
+                resolve (data);
             });
         });
     }
 
-    async getFile(key){
-        const s3 = this.getS3()
-        await s3.getObject(
-            { Bucket: process.env.BUCKET_S3, Key: key},
+    async getFile (key) {
+        const s3 = this.getS3 ()
+        await s3.getObject (
+            {Bucket: process.env.BUCKET_S3, Key: key},
             function (error, data) {
                 if (error != null) {
-                    alert("Failed to retrieve an object: " + error);
+                    alert ("Failed to retrieve an object: " + error);
                 } else {
-                    console.log(data)
+                    //console.log(data)
                     return data
                 }
             }
         );
     }
 
-    getS3() {
-        return new S3({
+    getS3 () {
+        return new S3 ({
             accessKeyId: process.env.S3_ACCESS_KEY_ID,
             secretAccessKey: process.env.SECRET_ACCESS_KEY,
             endpoint: process.env.END_POINT,

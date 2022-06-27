@@ -1,4 +1,4 @@
-export class CreateDocDto{
+export class CreateDocDto {
     readonly name;
     readonly type;
     readonly author;
