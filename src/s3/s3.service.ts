@@ -20,7 +20,7 @@ export class S3Service {
             Body: file,
         };
         return new Promise ((resolve, reject) => {
-            let s3Response = s3.upload (params, (err, data) => {
+            s3.upload (params, (err, data) => {
                 if (err) {
                     console.log (err);
                     reject (err.message);
@@ -38,7 +38,6 @@ export class S3Service {
                 if (error != null) {
                     alert ("Failed to retrieve an object: " + error);
                 } else {
-                    //console.log(data)
                     return data
                 }
             }
